@@ -21,7 +21,10 @@
         },
         {
             "label": "Run",
-            "command": "${workspaceFolder}/out/run.o",
+            "command": "sudo",
+            "args": [
+                "${workspaceFolder}/out/run.o"
+            ],
             "problemMatcher": [],
             "dependsOn": [
                 "Build"
